@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'telegram' => [
+        'key' => env('TELEGRAM_BOT_KEY', ''),
+    ],
 ];
