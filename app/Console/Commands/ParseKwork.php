@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\KworkProject;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -33,8 +35,6 @@ class ParseKwork extends Command
      */
     public function handle()
     {
-        $projects = [];
-
         $lastPage = $this->getLastPage();
 
         $actions = [];
@@ -54,22 +54,21 @@ class ParseKwork extends Command
                     $json = json_decode($script, true);
 
                     foreach ($json['wants'] as $project) {
-                        $projects[] = [
+                        KworkProject::firstOrCreate([
+                            'id' => $project['id'],
+                        ],[
                             'id' => $project['id'],
                             'title' => $project['name'],
                             'description' => $project['description'],
                             'price' => $project['priceLimit'],
                             'username' => $project['user']['username'],
-                        ];
+                        ]);
                     }
                 }
-
-                return $projects;
             };
         }
 
-
-        $projects = Concurrency::run($actions);
+        Concurrency::run($actions);
     }
 
     private function getLastPage(): int
