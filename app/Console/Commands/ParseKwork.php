@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SaveKworkProject;
 use App\Models\KworkProject;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Concurrency;
@@ -54,9 +55,7 @@ class ParseKwork extends Command
                     $json = json_decode($script, true);
 
                     foreach ($json['wants'] as $project) {
-                        KworkProject::firstOrCreate([
-                            'id' => $project['id'],
-                        ],[
+                        SaveKworkProject::dispatch([
                             'id' => $project['id'],
                             'title' => $project['name'],
                             'description' => $project['description'],
