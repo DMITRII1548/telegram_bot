@@ -16,3 +16,6 @@ TEST_TELEGRAM_CHAT_ID=""
 
 
 -- run parser with php artisan parse:kwork
+
+
+If you run app in server add php artisan schedule:run in cron 
