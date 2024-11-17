@@ -12,6 +12,7 @@ TELEGRAM_BOT_KEY=
 TELEGRAM_CHAT_ID=""
 TEST_TELEGRAM_CHAT_ID=""
 - php artisan key:generate
+- php artisan migrate
 - php artisan queue:work
 
 
